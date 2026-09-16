@@ -1,0 +1,8 @@
+node_modules/
+
+# dist/ is intentionally NOT ignored: action.yml's runs.main points at
+# dist/index.js (the ncc-bundled output, built via
+# `npx @vercel/ncc build src/index.js -o dist`), and this action must be
+# self-contained for external users -- nothing runs `npm install` for a
+# consumer referencing this repo via `uses:`. Rebuild and commit dist/
+# after any change to src/.

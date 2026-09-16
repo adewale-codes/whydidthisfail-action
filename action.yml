@@ -1,0 +1,36 @@
+name: "WhyDidThisFail?"
+description: "Automatically diagnoses a failed CI job and posts the cause, explanation, and fix as a comment -- no manual log-pasting needed."
+author: "adewale-codes"
+branding:
+  icon: "help-circle"
+  color: "purple"
+
+inputs:
+  github-token:
+    description: "Token used to fetch job logs and post comments. Defaults to the workflow's own GITHUB_TOKEN."
+    required: false
+    default: ${{ github.token }}
+  whyfail-api-url:
+    description: "Base URL of the WhyDidThisFail? diagnosis API. Defaults to the whyfail CLI's own default."
+    required: false
+    default: ""
+  website-url:
+    description: "Base URL of the WhyDidThisFail? website, used to create a shareable result-page link in the comment. If unset, the comment is posted without a share link."
+    required: false
+    default: ""
+  whyfail-cli:
+    description: "How to invoke the whyfail CLI. Defaults to the published npm package via npx. Override for local testing against an unpublished/local CLI build, e.g. \"node /path/to/cli/bin/cli.js\"."
+    required: false
+    default: "npx --yes whyfail@latest"
+  job-name:
+    description: "Only used with the workflow_run trigger: restrict diagnosis to failed jobs matching this name. If unset, all failed jobs in the run are diagnosed."
+    required: false
+    default: ""
+
+outputs:
+  posted:
+    description: "\"true\" if a comment was posted, \"false\" otherwise (e.g. nothing failed, or logs could not be retrieved)."
+
+runs:
+  using: "node20"
+  main: "dist/index.js"
